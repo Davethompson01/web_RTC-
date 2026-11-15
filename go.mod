@@ -2,4 +2,4 @@ module web-rtc
 
 go 1.25.5
 
-require github.com/go-chi/chi v1.5.5 // indirect
+require github.com/gorilla/websocket v1.5.3

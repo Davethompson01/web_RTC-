@@ -1,39 +1,28 @@
 package main
 
 import (
-	"log"
+	"context"
 	"net/http"
-	"os"
-	"time"
-
-	"github.com/go-chi/chi"
 )
 
 func main() {
-	log := log.New(os.Stdout, "WebRtc Server: ", log.LstdFlags)
 
-	port := os.Getenv("PORT")
-	if port == "" {
-		log.Printf("Failed to load .env")
-	}
+}
 
-	router := chi.NewRouter()
+func setupApp() *http.ServeMux {
 
-	server := &http.Server{
-		Addr:         ":3000",
-		Handler:      router,
-		ReadTimeout:  30 * time.Second,
-		IdleTimeout:  1 * time.Second,
-		WriteTimeout: 1 * time.Second,
-	}
+	// creates new router
+	mux := http.NewServeMux()
 
-	go func() {
-		err := server.ListenAndServe()
-		if err != nil {
-			log.Printf("Unable to start server %v", err)
-		}
-	}()
+	// when user enter default url, GO returns them back to the browser
+	mux.Handle("/", http.FileServer(http.Dir("/web/views")))
 
-	// signchannel
+	// check for file like app.css or .js file from the html request
+	output := http.FileServer(http.Dir("./web/static"))
+	// removes /static from the requested path to aviod redudance
+	mux.Handle("/static/", http.StripPrefix("/static/", output))
 
+	ctx := context.Background()
+
+	// mux
 }
