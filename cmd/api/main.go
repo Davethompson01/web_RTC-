@@ -2,11 +2,13 @@ package main
 
 import (
 	"context"
+	"log"
 	"net/http"
 )
 
 func main() {
-
+	setupApp()
+	log.Println(http.ListenAndServe(":8080", nil))
 }
 
 func setupApp() *http.ServeMux {
